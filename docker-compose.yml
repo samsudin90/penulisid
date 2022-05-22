@@ -1,0 +1,35 @@
+version: '3.9'
+services:
+  react-app2:
+    build: ./client/
+    container_name: react-app2
+    stdin_open: true
+    ports:
+      - "3000:3000"
+    networks:
+      - mern-app
+
+  server-api18:
+    build: ./backend/
+    container_name: server-api18
+    ports:
+      - "5000:5000"
+    networks:
+      - mern-app
+    depends_on:
+      - mongod
+
+  mongod:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - mern-app
+    volumes:
+      - mongo-data:/data/db
+networks:
+  mern-app:
+    driver: bridge
+volumes:
+  mongo-data:
+    driver: local
